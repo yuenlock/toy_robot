@@ -1,0 +1,52 @@
+Metrics/AbcSize:
+  Exclude:
+    - spec/**/*
+
+Metrics/LineLength:
+  Max: 150
+  Exclude:
+    - spec/**/*
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+
+Metrics/MethodLength:
+  Exclude:
+
+Metrics/ParameterLists:
+  Max: 10
+
+Style/BlockDelimiters:
+  EnforcedStyle: semantic
+  FunctionalMethods:
+    - let
+    - let!
+    - subject
+    - expect
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: true
+
+AllCops:
+  Exclude:
+    - 'bin/*'
+    - 'tmp/**/**'
+    - 'spec/spec_helper.rb'
+    - 'Guardfile'
+    - 'Gemfile'
