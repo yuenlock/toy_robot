@@ -40,12 +40,14 @@ module Robots
     def initialize(instructions:,
                    world:            RobotInject.world,
                    positioner:       RobotInject.positioner,
-                   command_handlers: RobotInject.command_handlers)
+                   command_handlers: RobotInject.command_handlers,
+                   initial_position: nil)
 
       @instructions     = instructions
       @world            = world
       @positioner       = positioner
       @command_handlers = command_handlers
+      @position         = initial_position
     end
 
     def process
@@ -88,7 +90,7 @@ module Robots
     end
 
     def update_position(location: position.location, orientation: position.orientation)
-      @position = positioner.new(location: location, orientation: orientation) if valid?(location.to_h)
+      @position = positioner.new(location: location, orientation: orientation) if valid?(location)
       nil
     end
   end

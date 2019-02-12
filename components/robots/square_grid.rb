@@ -7,8 +7,8 @@ module Robots
       @boundaries = { x: max_x - 1, y: max_y - 1 }
     end
 
-    def valid?(position_h)
-      coordinates_valid?(position_h)
+    def valid?(position)
+      coordinates_valid?(position.to_h)
     end
 
     private
