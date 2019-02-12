@@ -5,7 +5,6 @@ require './components/robots/orientation'
 require './components/robots/position'
 require './components/robots/square_grid'
 require './components/command_handlers'
-
 require 'forwardable'
 
 module Robots
@@ -31,20 +30,14 @@ module Robots
     extend Forwardable
     def_delegators :@world, :valid?
 
-    # def_delegators :@position, :report
-
     def self.call(instructions:)
       new(instructions: instructions).process
     end
 
     attr_reader :player
-    def initialize(instructions: [],
-                   player: nil,
-                   world:            RobotInject.world,
-                   positioner:       RobotInject.positioner,
+    def initialize(instructions: [], player: nil, world: RobotInject.world,
                    command_handlers: RobotInject.command_handlers,
-                   initial_position: nil)
-
+                   positioner: RobotInject.positioner, initial_position: nil)
       @instructions     = instructions
       @player           = player
       @world            = world
@@ -72,7 +65,6 @@ module Robots
 
     def move
       location = position.move
-
       return unless valid?(location)
 
       world.relocate(position&.location, location)
@@ -97,8 +89,7 @@ module Robots
 
     private
 
-    attr_reader :instructions, :world, :positioner, :command_handlers
-    attr_reader :position
+    attr_reader :instructions, :world, :position, :command_handlers, :positioner
 
     def run_command(handler, action, arg)
       handler.call(robot: self, arg: arg) if handler.accepts?(robot: self, name: action)

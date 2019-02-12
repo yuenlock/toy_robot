@@ -1,5 +1,5 @@
-ActivePipe Coding Challenge
-===========================
+Coding Challenge
+================
 
 The Toy Robot challenge is well known coding challenge that can be solved in many different ways — we’ve given this one a twist. ActivePipe wants to use this challenge to assess your problem solving skills and gauge how you approach the problem.
 
@@ -93,4 +93,5 @@ Expected output:
 Expected output:
 
     ALICE: 2,1,EAST
+    BOB: 1,1,EAST
 

@@ -4,20 +4,20 @@ require './components/robots/square_grid'
 require './components/robots/robot'
 
 module Robots
-  class RobotGame
-    # Depency Injector
-    class RobotGameInject
-      class << self
-        def world
-          Robots::SquareGrid.new
-        end
+  # Depency Injector
+  class RobotGameInject
+    class << self
+      def world
+        Robots::SquareGrid.new
+      end
 
-        def roboter
-          Robots::Robot
-        end
+      def roboter
+        Robots::Robot
       end
     end
+  end
 
+  class RobotGame
     def self.call(instructions:)
       new(instructions: instructions).process
     end
@@ -33,6 +33,8 @@ module Robots
     def process
       instructions.map { |instruction| execute(instruction) }.flatten.compact
     end
+
+    private
 
     def execute(instruction)
       player, action = instruction.split(': ')

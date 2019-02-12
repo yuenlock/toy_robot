@@ -5,7 +5,7 @@ module Commands
   class Place
     class << self
       def accepts?(robot:, name:)
-        !robot.placed? && name == 'PLACE'
+        name == 'PLACE'
       end
 
       def call(robot:, arg:)

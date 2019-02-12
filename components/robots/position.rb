@@ -5,9 +5,9 @@ module Robots
   class Position
     attr_reader :location, :orientation, :locationer
     def initialize(location:, orientation:, locationer: Robots::Location)
-      @location = location
+      @location    = location
       @orientation = orientation
-      @locationer = locationer
+      @locationer  = locationer
     end
 
     def to_h
@@ -29,6 +29,7 @@ module Robots
     def move
       change = orientation.move_modifier
       location_h = location.to_h
+
       locationer.new(x: location_h[:x] + change[:x], y: location_h[:y] + change[:y])
     end
   end

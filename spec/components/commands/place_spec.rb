@@ -29,7 +29,7 @@ RSpec.describe Commands::Place do
     context 'accepted command' do
       subject { described_class.accepts?(robot: robot, name: command_name) }
 
-      it { expect(subject).to eq false }
+      it { expect(subject).to eq true }
     end
   end
 

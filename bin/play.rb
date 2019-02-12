@@ -2,7 +2,7 @@
 
 require './app/play_toy_robot'
 
-results = PlayMultiRobot.call(ARGV[0])
+results = PlayToyRobot.call(ARGV[0])
 puts ''
 
 results.each { |result| puts "    #{result}" }

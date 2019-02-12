@@ -23,6 +23,10 @@ module Robots
       vacate(old_location)
     end
 
+    def vacate(location)
+      @occupied_cells.delete(location.to_h)
+    end
+
     private
 
     MAX_X = 6
@@ -36,10 +40,6 @@ module Robots
 
     def coordinates_valid?(coordinates)
       (0..boundaries[:x]).cover?(coordinates[:x]) && (0..boundaries[:y]).cover?(coordinates[:y])
-    end
-
-    def vacate(location)
-      @occupied_cells.delete(location.to_h)
     end
   end
 end

@@ -43,10 +43,10 @@ module Robots
     ORIENTATION_SIZE  = ORIENTATION_NAMES.size
     MOVEMENT_MODIFIER = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: 0, y: -1 }, { x: -1, y: 0 }].freeze
 
-    attr_reader :facing
-
     LEFT = -1
     RIGHT = 1
+
+    attr_reader :facing
 
     def rotate(turn)
       Orientation.new((facing + ORIENTATION_SIZE + turn) % ORIENTATION_SIZE)
