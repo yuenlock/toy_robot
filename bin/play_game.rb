@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require './app/play_toy_robot'
+require './app/play_multi_robot'
 
 results = PlayMultiRobot.call(ARGV[0])
 puts ''

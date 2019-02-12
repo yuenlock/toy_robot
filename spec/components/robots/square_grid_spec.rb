@@ -29,4 +29,69 @@ RSpec.describe Robots::SquareGrid do
       end
     end
   end
+
+  describe '#occupy' do
+    let(:vacant_location) { instance_double('Robots::Location', to_h: { x: 0, y: 1 }) }
+    let(:swarm) {
+      [
+        instance_double('Robots::Location', to_h: { x: 1, y: 1 }),
+        instance_double('Robots::Location', to_h: { x: 2, y: 2 }),
+        instance_double('Robots::Location', to_h: { x: 3, y: 3 })
+      ]
+    }
+    subject { described_class.new }
+
+    it 'cell becomes invalid' do
+      swarm.each do |location|
+        subject.occupy(location)
+      end
+      swarm.each do |location|
+        expect(subject.valid?(location)).to eq false
+      end
+      expect(subject.valid?(vacant_location)).to eq true
+    end
+  end
+
+  describe '#vacate' do
+    let(:swarm) {
+      [
+        instance_double('Robots::Location', to_h: { x: 1, y: 1 }),
+        instance_double('Robots::Location', to_h: { x: 2, y: 2 }),
+        instance_double('Robots::Location', to_h: { x: 3, y: 3 })
+      ]
+    }
+    subject { described_class.new }
+
+    it 'cell becomes valid' do
+      swarm.each do |location|
+        subject.occupy(location)
+      end
+
+      swarm.each do |location|
+        subject.vacate(location)
+        expect(subject.valid?(location)).to eq true
+      end
+    end
+  end
+
+  describe '#relocate' do
+    let(:old_location) { instance_double('Robots::Location', to_h: { x: 1, y: 1 }) }
+    let(:new_location) { instance_double('Robots::Location', to_h: { x: 2, y: 2 }) }
+
+    subject { described_class.new }
+
+    it 'cell becomes valid' do
+      subject.occupy(old_location)
+
+      subject.relocate(old_location, new_location)
+      expect(subject.valid?(old_location)).to eq true
+      expect(subject.valid?(new_location)).to eq false
+    end
+
+    it 'handles no old_location' do
+      subject.relocate(nil, new_location)
+
+      expect(subject.valid?(new_location)).to eq false
+    end
+  end
 end

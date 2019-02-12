@@ -31,19 +31,22 @@ module Robots
     extend Forwardable
     def_delegators :@world, :valid?
 
-    def_delegators :@position, :report
+    # def_delegators :@position, :report
 
     def self.call(instructions:)
       new(instructions: instructions).process
     end
 
-    def initialize(instructions:,
+    attr_reader :player
+    def initialize(instructions: [],
+                   player: nil,
                    world:            RobotInject.world,
                    positioner:       RobotInject.positioner,
                    command_handlers: RobotInject.command_handlers,
                    initial_position: nil)
 
       @instructions     = instructions
+      @player           = player
       @world            = world
       @positioner       = positioner
       @command_handlers = command_handlers
@@ -61,11 +64,19 @@ module Robots
     end
 
     def place(location:, orientation:)
+      return unless valid?(location)
+
+      world.occupy(location)
       update_position(location: location, orientation: orientation)
     end
 
     def move
-      update_position(location: position.move)
+      location = position.move
+
+      return unless valid?(location)
+
+      world.relocate(position&.location, location)
+      update_position(location: location)
     end
 
     def left
@@ -74,6 +85,10 @@ module Robots
 
     def right
       update_position(orientation: position.right)
+    end
+
+    def report
+      "#{player_label}#{position.report}"
     end
 
     def placed?
@@ -90,8 +105,12 @@ module Robots
     end
 
     def update_position(location: position.location, orientation: position.orientation)
-      @position = positioner.new(location: location, orientation: orientation) if valid?(location)
+      @position = positioner.new(location: location, orientation: orientation)
       nil
+    end
+
+    def player_label
+      "#{player}: " if player
     end
   end
 end

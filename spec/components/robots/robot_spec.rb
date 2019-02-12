@@ -18,14 +18,29 @@ RSpec.describe Robots::Robot do
     end
   end
 
+  describe 'new' do
+    let(:player) { 'ALICE' }
+    let(:world) { instance_double('Robots::SquareGrid') }
+    let(:instructions) { ['PLACE 0,1,SOUTH', 'MOVE', 'REPORT', 'BAD', 'WRONG'] }
+    let(:result) { ['0,0,SOUTH'] }
+
+    subject { described_class.new(player: player, world: world) }
+
+    it 'initializes and processes' do
+      expect(subject.player).to eq player
+    end
+  end
+
   describe '#process' do
-    let(:instructions) { ['PLACE 0,1,SOUTH', 'REPORT', 'LEFT', 'REPORT', 'MOVE', 'REPORT', 'RIGHT', 'REPORT', 'MOVE', 'REPORT'] }
+    let(:instructions) { ['PLACE 0,1,SOUTH', 'REPORT', 'RIGHT', 'REPORT', 'MOVE', 'REPORT'] }
     let(:instance) { described_class.new(instructions: instructions) }
-    let(:result) { ['0,1,SOUTH', '0,1,EAST', '1,1,EAST', '1,1,SOUTH', '1,0,SOUTH'] }
+    let(:raw_results) { [[nil, nil], [nil, '0,1,SOUTH'], ['1,1,EAST', '1,2,EAST'], ['2,1,EAST', nil]] }
+    let(:result) { ['0,1,SOUTH', '1,1,EAST', '1,2,EAST', '2,1,EAST'] }
 
     subject { described_class.new(instructions: instructions) }
 
     it 'initializes and processes' do
+      expect(instructions).to receive(:map).and_return raw_results
       expect(subject.process).to eq result
     end
   end
@@ -60,6 +75,8 @@ RSpec.describe Robots::Robot do
         expect(positioner).to(
           receive(:new).with(location: initial_location, orientation: initial_orientation)
         ).and_return initial_position
+        expect(world).to receive(:occupy).with(initial_location)
+
         expect(subject.place(location: initial_location, orientation: initial_orientation)).to eq nil
       end
     end
@@ -71,6 +88,9 @@ RSpec.describe Robots::Robot do
         expect(positioner).to(
           receive(:new).with(location: changed_location, orientation: initial_orientation)
         ).and_return changed_position
+
+        expect(world).to receive(:relocate).with(initial_location, changed_location)
+
         expect(subject.move).to eq nil
       end
     end
@@ -84,9 +104,30 @@ RSpec.describe Robots::Robot do
       end
     end
 
+    describe '#report with player name' do
+      let(:player) { 'ALICE' }
+
+      subject {
+        described_class.new(
+          player: player,
+          world: world,
+          positioner: positioner,
+          command_handlers: [],
+          initial_position: initial_position
+        )
+      }
+      let(:position_report) { '3,4,NORTH' }
+      let(:robot_report) { "#{player}: #{position_report}" }
+
+      it 'reports the position' do
+        expect(initial_position).to receive(:report).and_return position_report
+
+        expect(subject.report).to eq robot_report
+      end
+    end
+
     describe 'rotate' do
       before do
-        expect(world).to receive(:valid?).with(initial_location).and_return true
         expect(positioner).to(
           receive(:new).with(location: initial_location, orientation: changed_orientation)
         ).and_return changed_position

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require './components/robots/robot'
+require './components/robots/robot_game'
 require './components/utils/file_reader'
 
-class PlayToyRobot
+class PlayMultiRobot
   FILE_NOT_FOUND = 'Please provide a valid file.'
 
   def self.call(filename)
@@ -20,7 +20,7 @@ class PlayToyRobot
   def process
     return file_read_error if file_read_error
 
-    Robots::Robot.call(instructions: file_commands)
+    Robots::RobotGame.call(instructions: file_commands)
   end
 
   def file_commands
