@@ -17,6 +17,9 @@ Metrics/MethodLength:
 Metrics/ParameterLists:
   Max: 10
 
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
 Style/BlockDelimiters:
   EnforcedStyle: semantic
   FunctionalMethods:
