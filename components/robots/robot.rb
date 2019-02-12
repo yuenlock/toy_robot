@@ -4,10 +4,29 @@ require './components/robots/location'
 require './components/robots/orientation'
 require './components/robots/position'
 require './components/robots/square_grid'
+require './components/command_handlers'
 
 require 'forwardable'
 
 module Robots
+  # Dependency injector
+  class RobotInject
+    class << self
+      def command_handlers
+        [Commands::Move, Commands::Left, Commands::Right, Commands::Report, Commands::Place]
+      end
+
+      def world
+        SquareGrid.new
+      end
+
+      def positioner
+        Robots::Position
+      end
+    end
+  end
+
+  # robot class accepts and runs commands
   class Robot
     extend Forwardable
     def_delegators :@world, :valid?
@@ -18,39 +37,33 @@ module Robots
       new(instructions: instructions).process
     end
 
-    attr_reader :instructions, :position, :world
-    def initialize(instructions:, world: SquareGrid.new)
-      @instructions = instructions
-      @world = world
+    def initialize(instructions:,
+                   world:            RobotInject.world,
+                   positioner:       RobotInject.positioner,
+                   command_handlers: RobotInject.command_handlers)
+
+      @instructions     = instructions
+      @world            = world
+      @positioner       = positioner
+      @command_handlers = command_handlers
     end
 
     def process
-      instructions.map { |instruction| execute(instruction) }.compact
+      instructions.map { |instruction| execute(instruction) }.flatten.compact
     end
 
     def execute(instruction)
       action, arg = instruction.split(' ')
-      if position
-        send(action.downcase) if %w[MOVE LEFT RIGHT REPORT].include? action
-      elsif action == 'PLACE'
-        send(action.downcase, arg)
-      end
+
+      command_handlers.map { |handler| run_command(handler, action, arg) }
     end
 
-    def place(arg)
-      x, y, orientation_name = arg.split(',')
-      location = Location.new(x: x.to_i, y: y.to_i)
-      orientation = Orientation.new_from_name(orientation_name)
+    def place(location:, orientation:)
       update_position(location: location, orientation: orientation)
-      nil
     end
 
     def move
       update_position(location: position.move)
-    end
-
-    def position_h
-      position.to_h
     end
 
     def left
@@ -61,8 +74,21 @@ module Robots
       update_position(orientation: position.right)
     end
 
+    def placed?
+      position != nil
+    end
+
+    private
+
+    attr_reader :instructions, :world, :positioner, :command_handlers
+    attr_reader :position
+
+    def run_command(handler, action, arg)
+      handler.call(robot: self, arg: arg) if handler.accepts?(robot: self, name: action)
+    end
+
     def update_position(location: position.location, orientation: position.orientation)
-      @position = Position.new(location: location, orientation: orientation) if valid?(location.to_h)
+      @position = positioner.new(location: location, orientation: orientation) if valid?(location.to_h)
       nil
     end
   end

@@ -3,7 +3,7 @@
 module Robots
   # holds orientation
   class Orientation
-    def self.new_from_name(name)
+    def self.build_from_name(name)
       new(ORIENTATION_NAMES.index(name))
     end
 
