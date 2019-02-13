@@ -5,9 +5,10 @@ require './components/robots/square_grid'
 RSpec.describe Robots::SquareGrid do
   let(:coord_x) { 1 }
   let(:coord_y) { 2 }
+  let(:boundaries) { Struct.new(:x, :y).new(5, 5) }
 
   describe '#valid?' do
-    subject { described_class.new }
+    subject { described_class.new(boundaries: boundaries) }
 
     context 'Good coords' do
       let(:good_coords) {
@@ -61,7 +62,7 @@ RSpec.describe Robots::SquareGrid do
         instance_double('Robots::Location', x: 3, y: 3)
       ]
     }
-    subject { described_class.new }
+    subject { described_class.new(boundaries: boundaries) }
 
     it 'cell becomes invalid' do
       occupied_locations.each do |location|
@@ -84,7 +85,7 @@ RSpec.describe Robots::SquareGrid do
         instance_double('Robots::Location', x: 3, y: 3)
       ]
     }
-    subject { described_class.new }
+    subject { described_class.new(boundaries: boundaries) }
 
     it 'cell becomes valid' do
       swarm.each do |location|
@@ -102,7 +103,7 @@ RSpec.describe Robots::SquareGrid do
     let(:old_location) { instance_double('Robots::Location', x: 1, y: 1) }
     let(:new_location) { instance_double('Robots::Location', x: 2, y: 2) }
 
-    subject { described_class.new }
+    subject { described_class.new(boundaries: boundaries) }
 
     it 'cell becomes valid' do
       subject.occupy(old_location)

@@ -30,14 +30,6 @@ RSpec.describe Robots::Orientation do
       it { expect(subject.to_s).to eq 'EAST' }
     end
 
-    describe '#to_h' do
-      it { expect(subject.facing).to eq(facing) }
-    end
-
-    describe '#to_i' do
-      it { expect(subject.facing).to eq facing }
-    end
-
     describe '.build_from_name' do
       it { expect(described_class.build_from_name('EAST').facing).to eq 1 }
       it { expect(described_class.build_from_name('WEST').to_s).to eq 'WEST' }

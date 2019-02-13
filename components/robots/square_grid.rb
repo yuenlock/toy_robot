@@ -3,8 +3,8 @@
 module Robots
   # robot's world
   class SquareGrid
-    def initialize(max_x: MAX_Y, max_y: MAX_X)
-      @boundaries = { x: max_x - 1, y: max_y - 1 }
+    def initialize(max_x: MAX_Y, max_y: MAX_X, boundaries: nil)
+      @boundaries = boundaries || Struct.new(:x, :y).new(max_x - 1, max_y - 1)
       @occupied_cells = []
     end
 
@@ -37,7 +37,7 @@ module Robots
     end
 
     def coordinates_valid?(location)
-      (0..boundaries[:x]).cover?(location.x) && (0..boundaries[:y]).cover?(location.y)
+      (0..boundaries.x).cover?(location.x) && (0..boundaries.y).cover?(location.y)
     end
   end
 end
