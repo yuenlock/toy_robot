@@ -7,16 +7,15 @@ module Utils
       attr_reader :filename
 
       def call(filename)
-        return { error: filename_required_msg } unless filename
-
         @filename = filename
-        file_exist? ? { commands: process_file } : { error: file_not_found_msg }
+
+        [retrieve_commands, file_error]
       end
 
       private
 
-      def file_exist?
-        File.file?(filename)
+      def retrieve_commands
+        process_file unless file_error
       end
 
       def process_file
@@ -41,6 +40,18 @@ module Utils
 
       def filename_required_msg
         'Please provide a valid file.'
+      end
+
+      def file_error
+        filename_missing? || file_not_found?
+      end
+
+      def filename_missing?
+        filename_required_msg unless filename
+      end
+
+      def file_not_found?
+        file_not_found_msg unless File.file?(filename)
       end
     end
   end
