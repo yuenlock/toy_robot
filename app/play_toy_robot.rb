@@ -1,26 +1,29 @@
 # frozen_string_literal: true
 
 require './components/robots/robot'
+require './components/robots/robot_game'
+
 require './components/utils/file_reader'
 
 class PlayToyRobot
   FILE_NOT_FOUND = 'Please provide a valid file.'
 
-  def self.call(filename)
+  def self.call(filename, game: Robots::RobotGame)
     return [FILE_NOT_FOUND] unless filename && File.file?(filename)
 
-    new(filename: filename).process
+    new(filename: filename, game: game).process
   end
 
-  attr_reader :filename
-  def initialize(filename:)
+  attr_reader :filename, :game
+  def initialize(filename:, game:)
     @filename = filename
+    @game = game
   end
 
   def process
     return file_read_error if file_read_error
 
-    Robots::Robot.call(instructions: file_commands)
+    game.call(instructions: file_commands)
   end
 
   def file_commands
