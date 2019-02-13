@@ -10,10 +10,6 @@ module Robots
       @locationer  = locationer
     end
 
-    def to_h
-      location.to_h.merge(facing: orientation.to_i)
-    end
-
     def report
       "#{location},#{orientation}"
     end
@@ -28,9 +24,8 @@ module Robots
 
     def move
       change = orientation.move_modifier
-      location_h = location.to_h
 
-      locationer.new(x: location_h[:x] + change[:x], y: location_h[:y] + change[:y])
+      locationer.new(x: location.x + change[:x], y: location.y + change[:y])
     end
   end
 end

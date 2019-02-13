@@ -11,13 +11,13 @@ RSpec.describe Robots::Orientation do
 
   describe 'Actions' do
     describe '#left' do
-      it { expect(described_class.new(facing).left.to_i).to eq(facing + described_class::LEFT) }
-      it { expect(described_class.new(min_facing).left.to_i).to eq(max_facing) }
+      it { expect(described_class.new(facing).left.facing).to eq(facing + described_class::LEFT) }
+      it { expect(described_class.new(min_facing).left.facing).to eq(max_facing) }
     end
 
     describe '#right' do
-      it { expect(described_class.new(facing).right.to_i).to eq(facing + described_class::RIGHT) }
-      it { expect(described_class.new(max_facing).right.to_i).to eq(min_facing) }
+      it { expect(described_class.new(facing).right.facing).to eq(facing + described_class::RIGHT) }
+      it { expect(described_class.new(max_facing).right.facing).to eq(min_facing) }
     end
   end
 
@@ -31,15 +31,15 @@ RSpec.describe Robots::Orientation do
     end
 
     describe '#to_h' do
-      it { expect(subject.to_h).to eq(orientation: facing) }
+      it { expect(subject.facing).to eq(facing) }
     end
 
     describe '#to_i' do
-      it { expect(subject.to_i).to eq facing }
+      it { expect(subject.facing).to eq facing }
     end
 
     describe '.build_from_name' do
-      it { expect(described_class.build_from_name('EAST').to_i).to eq 1 }
+      it { expect(described_class.build_from_name('EAST').facing).to eq 1 }
       it { expect(described_class.build_from_name('WEST').to_s).to eq 'WEST' }
     end
   end

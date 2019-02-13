@@ -9,13 +9,11 @@ module Robots
     end
 
     def valid?(location)
-      location_h = location.to_h
-
-      coordinates_valid?(location_h) && cell_vacant?(location_h)
+      coordinates_valid?(location) && cell_vacant?(location)
     end
 
     def occupy(location)
-      @occupied_cells << location.to_h
+      @occupied_cells << location
     end
 
     def relocate(old_location, new_location)
@@ -24,7 +22,7 @@ module Robots
     end
 
     def vacate(location)
-      @occupied_cells.delete(location.to_h)
+      @occupied_cells.delete(location)
     end
 
     private
@@ -34,12 +32,12 @@ module Robots
 
     attr_reader :boundaries, :occupied_cells
 
-    def cell_vacant?(location_h)
-      !occupied_cells.find { |cell| cell == location_h }
+    def cell_vacant?(location)
+      !occupied_cells.find { |cell| cell.x == location.x && cell.y == location.y }
     end
 
-    def coordinates_valid?(coordinates)
-      (0..boundaries[:x]).cover?(coordinates[:x]) && (0..boundaries[:y]).cover?(coordinates[:y])
+    def coordinates_valid?(location)
+      (0..boundaries[:x]).cover?(location.x) && (0..boundaries[:y]).cover?(location.y)
     end
   end
 end

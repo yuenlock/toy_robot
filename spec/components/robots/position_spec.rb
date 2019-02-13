@@ -9,11 +9,11 @@ RSpec.describe Robots::Position do
   let(:facing_name) { 'EAST' }
   let(:locationer) { class_double 'Robots::Location' }
   let(:location) {
-    instance_double('Robots::Location', to_h: { x: x_coord, y: y_coord }, to_s: "#{x_coord},#{y_coord}")
+    instance_double('Robots::Location', x: x_coord, y: y_coord, to_s: "#{x_coord},#{y_coord}")
   }
 
   let(:orientation) {
-    instance_double('Robots::Orientation', to_h: { orientation: facing }, to_s: facing_name, to_i: facing)
+    instance_double('Robots::Orientation', to_s: facing_name, facing: facing)
   }
 
   describe 'Conversions' do
@@ -22,15 +22,11 @@ RSpec.describe Robots::Position do
     describe '#report' do
       it { expect(subject.report).to eq "#{x_coord},#{y_coord},#{facing_name}" }
     end
-
-    describe '#to_h' do
-      it { expect(subject.to_h).to eq(x: x_coord, y: y_coord, facing: facing) }
-    end
   end
 
   describe 'Actions' do
     let(:initial_orientation) { instance_double('Robots::Orientation') }
-    let(:initial_location) { instance_double('Robots::Location', to_h: { x: x_coord, y: y_coord }) }
+    let(:initial_location) { instance_double('Robots::Location', x: x_coord, y: y_coord) }
 
     subject { described_class.new(location: initial_location, orientation: initial_orientation, locationer: locationer) }
 
@@ -54,6 +50,7 @@ RSpec.describe Robots::Position do
 
     describe '#move' do
       let(:changed_location) { instance_double('Robots::Location') }
+
       it 'moves' do
         expect(initial_orientation).to receive(:move_modifier).and_return(x: 1, y: 0)
         expect(locationer).to receive(:new).with(x: x_coord + 1, y: y_coord).and_return changed_location

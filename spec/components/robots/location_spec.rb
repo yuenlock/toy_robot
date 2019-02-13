@@ -11,8 +11,4 @@ RSpec.describe Robots::Location do
   describe '#to_s' do
     it { expect(subject.to_s).to eq '1,2' }
   end
-
-  describe '#to_h' do
-    it { expect(subject.to_h).to eq(x: coord_x, y: coord_y) }
-  end
 end
