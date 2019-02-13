@@ -9,14 +9,14 @@ module Utils
         @io_handler = io_handler
 
         print
-        contents.empty? ? no_results : process(Array(contents))
+        contents.empty? ? no_results : process(contents)
         print
       end
 
       private
 
       def process(contents)
-        contents.each { |line| print line }
+        Array(contents).each { |line| print line }
       end
 
       def no_results

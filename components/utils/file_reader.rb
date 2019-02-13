@@ -18,6 +18,10 @@ module Utils
         process_file unless file_error
       end
 
+      def file_error
+        filename_missing? || file_not_found?
+      end
+
       def process_file
         remove_empty sanitise(raw_lines)
       end
@@ -34,24 +38,20 @@ module Utils
         File.readlines(filename)
       end
 
-      def file_not_found_msg
-        "Can't find File #{filename}."
-      end
-
-      def filename_required_msg
-        'Please provide a valid file.'
-      end
-
-      def file_error
-        filename_missing? || file_not_found?
-      end
-
       def filename_missing?
         filename_required_msg unless filename
       end
 
       def file_not_found?
         file_not_found_msg unless File.file?(filename)
+      end
+
+      def file_not_found_msg
+        "Can't find File #{filename}."
+      end
+
+      def filename_required_msg
+        'Please provide a valid file.'
       end
     end
   end
