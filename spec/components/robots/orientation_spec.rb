@@ -24,6 +24,8 @@ RSpec.describe Robots::Orientation do
   describe 'Conversions' do
     describe '#move_modifier' do
       it { expect(subject.move_modifier).to eq described_class::MOVEMENT_MODIFIER[facing] }
+      it { expect(subject.move_modifier.respond_to?(:x)).to eq true }
+      it { expect(subject.move_modifier.respond_to?(:y)).to eq true }
     end
 
     describe '#to_s' do

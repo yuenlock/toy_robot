@@ -33,7 +33,10 @@ module Robots
 
     ORIENTATION_NAMES = %w[NORTH EAST SOUTH WEST].freeze
     ORIENTATION_SIZE  = ORIENTATION_NAMES.size
-    MOVEMENT_MODIFIER = [{ x: 0, y: 1 }, { x: 1, y: 0 }, { x: 0, y: -1 }, { x: -1, y: 0 }].freeze
+
+    MODIFIER_STRUCT = Struct.new(:x, :y)
+    MOVEMENT_MODIFIER = [MODIFIER_STRUCT.new(0, 1), MODIFIER_STRUCT.new(1, 0),
+                         MODIFIER_STRUCT.new(0, -1), MODIFIER_STRUCT.new(-1, 0)].freeze
 
     LEFT = -1
     RIGHT = 1

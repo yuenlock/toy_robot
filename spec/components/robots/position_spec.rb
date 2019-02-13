@@ -50,9 +50,10 @@ RSpec.describe Robots::Position do
 
     describe '#move' do
       let(:changed_location) { instance_double('Robots::Location') }
+      let(:move_modifier) { Struct.new(:x, :y).new(1, 0) }
 
       it 'moves' do
-        expect(initial_orientation).to receive(:move_modifier).and_return(x: 1, y: 0)
+        expect(initial_orientation).to receive(:move_modifier).and_return move_modifier
         expect(locationer).to receive(:new).with(x: x_coord + 1, y: y_coord).and_return changed_location
         expect(subject.move).to eq changed_location
       end

@@ -25,7 +25,7 @@ module Robots
     def move
       change = orientation.move_modifier
 
-      locationer.new(x: location.x + change[:x], y: location.y + change[:y])
+      locationer.new(x: location.x + change.x, y: location.y + change.y)
     end
   end
 end
