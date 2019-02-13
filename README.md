@@ -1,6 +1,14 @@
 Multiplayer Toy Robot
 ===========================
 
+To install, clone this repository and then run
+
+    bundle install
+
+To run tests
+
+    bundle exec rspec
+
 To run
 
     bin/play_game.rb <filename>
