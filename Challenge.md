@@ -1,9 +1,7 @@
 Coding Challenge
 ================
 
-The Toy Robot challenge is well known coding challenge that can be solved in many different ways — we’ve given this one a twist. ActivePipe wants to use this challenge to assess your problem solving skills and gauge how you approach the problem.
-
-A Github repository should be used to share your code. We want to see your focus on extensible and maintainable code. Implement this challenge as if you were working as a part of the ActivePipe team. Other team members may contribute to the codebase over time and the requirements may change.
+The Toy Robot challenge is well known coding challenge that can be solved in many different ways — we’ve given this one a twist.
 
 The challenge is to simulate a toy robot moving on a square board of 6 x 6 units. The robot can roam around the surface of the board but shouldn’t be able to fall off the edge. The twist is you are able to place any number of robots on the board and they move independently of each other. Any movement that would result in the robot falling from the board or colliding with another robot must be prevented, however further valid movement commands must still be allowed.
 
